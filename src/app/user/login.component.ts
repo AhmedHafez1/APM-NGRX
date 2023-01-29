@@ -1,22 +1,35 @@
+import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
+import { ToggleMaskUserName } from './state/user.reducer';
 
+export interface UserState {
+  user: {
+    maskUserName: boolean;
+  };
+}
 @Component({
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
 
   maskUserName: boolean;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private store: Store<UserState>
+  ) {}
 
   ngOnInit(): void {
-
+    this.store
+      .select('user')
+      .subscribe((user) => (this.maskUserName = user.maskUserName));
   }
 
   cancel(): void {
@@ -24,7 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(): void {
-    this.maskUserName = !this.maskUserName;
+    this.store.dispatch({ type: ToggleMaskUserName });
   }
 
   login(loginForm: NgForm): void {
