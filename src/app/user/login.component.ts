@@ -5,7 +5,10 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
-import { ToggleMaskUserName } from './state/user.reducer';
+import {
+  toggleMaskUserName,
+  toggleMaskUserNameSelector,
+} from './state/user.reducer';
 
 @Component({
   templateUrl: './login.component.html',
@@ -24,8 +27,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.store
-      .select('user')
-      .subscribe((user) => (this.maskUserName = user.maskUserName));
+      .select(toggleMaskUserNameSelector)
+      .subscribe((maskUserName) => (this.maskUserName = maskUserName));
   }
 
   cancel(): void {
@@ -33,7 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(): void {
-    this.store.dispatch({ type: ToggleMaskUserName });
+    this.store.dispatch({ type: toggleMaskUserName });
   }
 
   login(loginForm: NgForm): void {

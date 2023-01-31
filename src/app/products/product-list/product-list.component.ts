@@ -1,4 +1,8 @@
-import { ToggleProductCode, State } from './../state/product.reducer';
+import {
+  toggleProductCode,
+  State,
+  showProductCodeSelector,
+} from './../state/product.reducer';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
@@ -40,8 +44,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
 
     this.store
-      .select('product')
-      .subscribe((product) => (this.displayCode = product?.showProductCode));
+      .select(showProductCodeSelector)
+      .subscribe((showProductCode) => (this.displayCode = showProductCode));
   }
 
   ngOnDestroy(): void {
@@ -49,7 +53,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   checkChanged(): void {
-    this.store.dispatch({ type: ToggleProductCode });
+    this.store.dispatch({ type: toggleProductCode });
   }
 
   newProduct(): void {
