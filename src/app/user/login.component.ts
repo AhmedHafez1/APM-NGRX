@@ -1,3 +1,4 @@
+import { State } from './../app.state';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -6,11 +7,6 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { ToggleMaskUserName } from './state/user.reducer';
 
-export interface UserState {
-  user: {
-    maskUserName: boolean;
-  };
-}
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
@@ -23,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private store: Store<UserState>
+    private store: Store<State>
   ) {}
 
   ngOnInit(): void {

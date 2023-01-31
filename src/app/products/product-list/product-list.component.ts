@@ -1,4 +1,4 @@
-import { ToggleProductCode } from './../state/product.reducer';
+import { ToggleProductCode, State } from './../state/product.reducer';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
@@ -7,9 +7,6 @@ import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 
-export interface ProductState {
-  product: { showProductCode: boolean };
-}
 @Component({
   selector: 'pm-product-list',
   templateUrl: './product-list.component.html',
@@ -29,7 +26,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private store: Store<ProductState>
+    private store: Store<State>
   ) {}
 
   ngOnInit(): void {
