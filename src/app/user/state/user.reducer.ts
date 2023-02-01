@@ -5,13 +5,12 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import { toggleMaskUserName } from './user.actions';
 
 export interface UserState {
   name: string;
   maskUserName: boolean;
 }
-
-export const toggleMaskUserName = '[User] Toogle Mask User Name';
 
 export const userSelector = createFeatureSelector<UserState>('user');
 
@@ -27,7 +26,7 @@ const initialState: UserState = {
 
 export const userReducer = createReducer<UserState>(
   initialState,
-  on(createAction(toggleMaskUserName), (state) => {
+  on(toggleMaskUserName, (state) => {
     return { ...state, maskUserName: !state.maskUserName };
   })
 );
