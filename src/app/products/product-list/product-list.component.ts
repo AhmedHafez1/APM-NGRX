@@ -24,7 +24,7 @@ import { toggleProductCode } from '../state/product.actions';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
   errorMessage$: Observable<string> = this.store.select(productErrorSelector);
 
@@ -34,7 +34,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   // Used to highlight the selected product in the list
   selectedProduct$: Observable<Product | null>;
-  sub: Subscription;
 
   constructor(private store: Store<State>) {}
 
@@ -46,10 +45,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadProducts());
 
     this.displayCode$ = this.store.select(showProductCodeSelector);
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
   }
 
   checkChanged(): void {

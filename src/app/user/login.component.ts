@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { State } from './../app.state';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +16,7 @@ import { toggleMaskUserName } from './state/user.actions';
 export class LoginComponent implements OnInit {
   pageTitle = 'Log In';
 
-  maskUserName: boolean;
+  maskUserName$: Observable<boolean>;
 
   constructor(
     private authService: AuthService,
@@ -24,9 +25,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store
-      .select(toggleMaskUserNameSelector)
-      .subscribe((maskUserName) => (this.maskUserName = maskUserName));
+    this.maskUserName$ = this.store.select(toggleMaskUserNameSelector);
   }
 
   cancel(): void {
