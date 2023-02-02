@@ -1,16 +1,19 @@
 import {
   setCurrentProduct,
   initializeCurrentProduct,
+  loadProducts,
 } from './../state/product.actions';
 import {
   State,
   showProductCodeSelector,
   currentProductSelector,
+  productListSelector,
+  productErrorSelector,
 } from './../state/product.reducer';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -23,34 +26,26 @@ import { toggleProductCode } from '../state/product.actions';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
-  errorMessage: string;
+  errorMessage$: Observable<string> = this.store.select(productErrorSelector);
 
-  displayCode: boolean;
+  displayCode$: Observable<boolean>;
 
-  products: Product[];
+  products$: Observable<Product[]>;
 
   // Used to highlight the selected product in the list
-  selectedProduct: Product | null;
+  selectedProduct$: Observable<Product | null>;
   sub: Subscription;
 
-  constructor(
-    private productService: ProductService,
-    private store: Store<State>
-  ) {}
+  constructor(private store: Store<State>) {}
 
   ngOnInit(): void {
-    this.sub = this.store
-      .select(currentProductSelector)
-      .subscribe((currentProduct) => (this.selectedProduct = currentProduct));
+    this.selectedProduct$ = this.store.select(currentProductSelector);
 
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => (this.products = products),
-      error: (err) => (this.errorMessage = err),
-    });
+    this.products$ = this.store.select(productListSelector);
 
-    this.store
-      .select(showProductCodeSelector)
-      .subscribe((showProductCode) => (this.displayCode = showProductCode));
+    this.store.dispatch(loadProducts());
+
+    this.displayCode$ = this.store.select(showProductCodeSelector);
   }
 
   ngOnDestroy(): void {
