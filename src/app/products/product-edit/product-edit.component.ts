@@ -1,5 +1,7 @@
 import {
   clearCurrentProduct,
+  createProduct,
+  deleteProduct,
   setCurrentProduct,
   updateProduct,
 } from './../state/product.actions';
@@ -135,10 +137,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   deleteProduct(product: Product): void {
     if (product && product.id) {
       if (confirm(`Really delete the product: ${product.productName}?`)) {
-        this.productService.deleteProduct(product.id).subscribe({
-          next: () => this.store.dispatch(clearCurrentProduct()),
-          error: (err) => (this.errorMessage = err),
-        });
+        this.store.dispatch(deleteProduct({ productId: product.id }));
       }
     } else {
       // No need to delete, it was never saved
@@ -155,13 +154,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         const product = { ...originalProduct, ...this.productForm.value };
 
         if (product.id === 0) {
-          this.productService.createProduct(product).subscribe({
-            next: (p) =>
-              this.store.dispatch(
-                setCurrentProduct({ currentProductId: p.id })
-              ),
-            error: (err) => (this.errorMessage = err),
-          });
+          this.store.dispatch(createProduct({ product }));
         } else {
           this.store.dispatch(updateProduct({ product }));
         }
