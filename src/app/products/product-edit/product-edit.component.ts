@@ -1,6 +1,7 @@
 import {
   clearCurrentProduct,
   setCurrentProduct,
+  updateProduct,
 } from './../state/product.actions';
 import { currentProductSelector } from './../state/product.reducer';
 import { Store } from '@ngrx/store';
@@ -162,13 +163,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             error: (err) => (this.errorMessage = err),
           });
         } else {
-          this.productService.updateProduct(product).subscribe({
-            next: (p) =>
-              this.store.dispatch(
-                setCurrentProduct({ currentProductId: p.id })
-              ),
-            error: (err) => (this.errorMessage = err),
-          });
+          this.store.dispatch(updateProduct({ product }));
         }
       }
     }

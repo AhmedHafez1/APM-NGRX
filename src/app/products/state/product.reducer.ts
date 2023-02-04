@@ -13,6 +13,8 @@ import {
   initializeCurrentProduct,
   loadProductsSuccess,
   loadProductsFailure,
+  updateProductSuccess,
+  updateProductFailure,
 } from './product.actions';
 
 export interface State extends AppState.State {
@@ -83,5 +85,17 @@ export const productReducer = createReducer<ProductState>(
   }),
   on(loadProductsFailure, (state, action) => {
     return { ...state, products: [], error: action.error };
+  }),
+  on(updateProductSuccess, (state, action) => {
+    const index = state.products.findIndex((p) => p.id === action.product.id);
+    const updatedProducts = [...state.products];
+    updatedProducts.splice(index, 1, action.product);
+    return {
+      ...state,
+      products: updatedProducts,
+    };
+  }),
+  on(updateProductFailure, (state, action) => {
+    return { ...state, error: state.error };
   })
 );
