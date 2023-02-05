@@ -13,7 +13,7 @@ import {
   currentProductSelector,
   productListSelector,
   productErrorSelector,
-} from './../state/product.reducer';
+} from './../state';
 
 import { Product } from '../product';
 import { toggleProductCode } from '../state/product.actions';
