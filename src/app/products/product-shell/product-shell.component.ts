@@ -1,12 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Observable } from 'rxjs';
-import {
-  setCurrentProduct,
-  initializeCurrentProduct,
-  loadProducts,
-} from './../state/product.actions';
 import {
   State,
   showProductCodeSelector,
@@ -16,7 +10,8 @@ import {
 } from './../state';
 
 import { Product } from '../product';
-import { toggleProductCode } from '../state/product.actions';
+import { ProductPageActions } from '../state/actions';
+
 @Component({
   templateUrl: './product-shell.component.html',
 })
@@ -29,18 +24,20 @@ export class ProductShellComponent implements OnInit {
   constructor(private store: Store<State>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(loadProducts());
+    this.store.dispatch(ProductPageActions.loadProducts());
   }
 
   checkChanged(): void {
-    this.store.dispatch(toggleProductCode());
+    this.store.dispatch(ProductPageActions.toggleProductCode());
   }
 
   newProduct(): void {
-    this.store.dispatch(initializeCurrentProduct());
+    this.store.dispatch(ProductPageActions.initializeCurrentProduct());
   }
 
   productSelected(product: Product): void {
-    this.store.dispatch(setCurrentProduct({ currentProductId: product.id }));
+    this.store.dispatch(
+      ProductPageActions.setCurrentProduct({ currentProductId: product.id })
+    );
   }
 }
